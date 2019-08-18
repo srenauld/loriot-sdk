@@ -69,8 +69,10 @@ A simple example of how to do this is as follows:
 
     import SDK from 'loriot-sdk';
     let client = SDK({
-        username: 'foo@bar.com',
-        password: 'foobar'
+        credentials: {
+            username: 'foo@bar.com',
+            password: 'foobar'
+        }
     });
     let applications = await client.Applications().get(0, 10);
     let newDevice = await applications[0].devices().create({

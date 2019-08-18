@@ -6,7 +6,8 @@
   "author": "Seb Renauld <seb.renauld@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "cross-env jest"
+    "test": "cross-env jest",
+    "coveralls": "cross-env jest --coverage && cat ./cov/lcov.info | coveralls"
   },
   "dependencies": {
     "@hapi/joi": "^15.1.0",
@@ -26,6 +27,7 @@
     "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/runtime": "^7.5.5",
+    "coveralls": "^3.0.6",
     "cross-env": "^5.2.0",
     "jest": "^24.8.0",
     "sinon": "^7.4.1",
@@ -41,6 +43,7 @@
     ],
     "coverageReporters": [
       "html",
+      "lcov",
       "text-summary"
     ],
     "moduleFileExtensions": [

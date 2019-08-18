@@ -17,32 +17,32 @@ the parts of the API that you can find in the dashboard.
 
 The library currently supports the following use cases:
 
-[x] Networks
-  [x] Listing
-  [x] Creation
-  [x] Modification
-  [x] Deletion
+- [x] Networks
+  - [x] Listing
+  - [x] Creation
+  - [x] Modification
+  - [x] Deletion
 
-[x] Gateways (per network)
-  [x] Listing
-  [x] Creation (Currently no final list of possible makes/models)
-  [x] Deletion
-  [x] Modification
+- [x] Gateways (per network)
+  - [x] Listing
+  - [x] Creation (Currently no final list of possible makes/models)
+  - [x] Deletion
+  - [x] Modification
 
-[x] Applications
-  [x] Listing
-  [_] Creation
-  [_] Modification
-  [_] Deletion
+- [x] Applications
+  - [x] Listing
+  - [ ] Creation
+  - [ ] Modification
+  - [ ] Deletion
 
-[x] Devices (per application)
-  [x] Listing
-  [x] Creation
-  [x] Modification
-  [x] Deletion
+- [x] Devices (per application)
+  - [x] Listing
+  - [x] Creation
+  - [x] Modification
+  - [x] Deletion
 
-[x] Device events (via WebSocket)
-[x] Gateway events (via WebSocket)
+- [x] Device events (via WebSocket)
+- [x] Gateway events (via WebSocket)
 
 Additional use cases are welcome, as are pull requests. In particular, 
 the statistics and events for devices and gateways are of particular 

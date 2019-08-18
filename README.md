@@ -1,6 +1,8 @@
 The (unofficial) LORIOT SDK
 ------------
 
+[![Build Status](https://travis-ci.org/srenauld/loriot-sdk.svg?branch=master)](https://travis-ci.org/srenauld/loriot-sdk) [![Coverage Status](https://coveralls.io/repos/github/srenauld/loriot-sdk/badge.svg?branch=master)](https://coveralls.io/github/srenauld/loriot-sdk?branch=master) 
+
 LORIOT provides a great service as a LoRa back-office. However, 
 outside of the well-documented websocket transport to communicate 
 with your LoRa devices, everything had to be done manually. Network 

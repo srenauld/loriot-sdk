@@ -29,72 +29,54 @@ export default class Session {
         throw new Error("Could not log in to the Loriot back-office");
     }
     
-    async get(url, secondAttempt) {
-        await this.signedIn();
-        let request = {
-            method: 'GET',
-            url: url,
-            headers: {
-                Authorization: 'Session ' + this.token,
-            }
-        };
+    async handle(cb) {
         try {
-            return await this.client.request(request);
+            return await cb();
         } catch (e) {
-            console.log({
-                url: url,
-                status: e.response.status
-            });
-            if (secondAttempt || e.response.status !== 403) throw e;
+            if (e.response.status !== 403) throw e;
             await this.signIn();
-            return await this.get(url, true);
+            return await cb();
         }
+    }
+    async get(url) {
+        await this.signedIn();
+        return await this.handle( async () => {
+            let request = {
+                method: 'GET',
+                url: url,
+                headers: {
+                    Authorization: 'Session ' + this.token,
+                }
+            };
+            return await this.client.request(request);     
+        });
     }
     
     async post(url, body, secondAttempt) {
         await this.signedIn();
-        let request = {
-            method: 'POST',
-            url: url,
-            data: body,
-            headers: {
-                Authorization: 'Session ' + this.token
-            }
-        };
-        try {
-            return await this.client.request(request);
-        } catch (e) {
-            console.log({
+        return await this.handle( async() => {
+            let request = {
+                method: 'POST',
                 url: url,
-                status: e.response.status
-            });
-            if (secondAttempt || e.response.status !== 403) {
-                console.log(e);
-                throw e;
-            }
-            await this.signIn();
-            return await this.post(url, body, true);
-        }
+                data: body,
+                headers: {
+                    Authorization: 'Session ' + this.token
+                }
+            };
+            return await this.client.request(request);
+        });
     }
     async delete(url, secondAttempt) {
         await this.signedIn();
-        let request = {
-            method: 'DELETE',
-            url: url,
-            headers: {
-                Authorization: 'Session ' + this.token
-            }
-        };
-        try {
-            return await this.client.request(request);
-        } catch (e) {
-            console.log({
+        return await this.handle(async () => {
+            let request = {
+                method: 'DELETE',
                 url: url,
-                status: e.response.status
-            });
-            if (secondAttempt || e.response.status !== 403) throw e;
-            await this.signIn();
-            return await this.delete(url, true);
-        }
+                headers: {
+                    Authorization: 'Session ' + this.token
+                }
+            };
+            return await this.client.request(request);
+        });
     }
 }

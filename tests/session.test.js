@@ -26,6 +26,93 @@ describe('Session manager', () => {
             }));
             assert.equal(await client.signedIn(), true);
         });
+        it('Recognizes sign-in errors due to incorrect credentials', async () => {
+            let server = axios.create({
+                baseURL: 'https://eu2.loriot.io/'
+            });
+            let post_stub = sinon.stub(server, 'post');
+            let client = new Session(server, {
+                username: 'foo',
+                password: 'bar'
+            });
+            // Simulate a 200 with an error
+            post_stub.withArgs('1/pub/login', {
+                user: 'foo',
+                pwd: 'bar'
+            }).returns({});
+
+            assert.rejects(client.signIn());
+        });
+        it('Attempts to sign in again after a failure', async () => {
+            let server = axios.create({
+                baseURL: 'https://eu2.loriot.io/'
+            });
+            let post_stub = sinon.stub(server, 'post');
+            let request_stub = sinon.stub(server, 'request');
+            let client = new Session(server, {
+                username: 'foo',
+                password: 'bar'
+            });
+            // Simulate a successful login
+            post_stub.withArgs('1/pub/login', {
+                user: 'foo',
+                pwd: 'bar'
+            }).returns({
+                data: {
+                    session: 'foobar'
+                }
+            });
+            // But an unsuccessful network retrieval.
+            request_stub.withArgs({
+                method: 'GET',
+                url: '1/nwk/networks',
+                headers: {
+                    Authorization: 'Session foobar'
+                }
+            }).returns(new Promise((resolve, reject) => reject({
+                response: {
+                    status: 403
+                }
+            })));
+            assert.rejects(client.get('1/nwk/networks'));
+            assert(post_stub.calledOnce);
+
+        });
+        it('Immediately fails on true failure', async () => {
+            let server = axios.create({
+                baseURL: 'https://eu2.loriot.io/'
+            });
+            let post_stub = sinon.stub(server, 'post');
+            let request_stub = sinon.stub(server, 'request');
+            let client = new Session(server, {
+                username: 'foo',
+                password: 'bar'
+            });
+            client.token = 'foobar';
+            // Simulate a successful login
+            post_stub.withArgs('1/pub/login', {
+                user: 'foo',
+                pwd: 'bar'
+            }).returns({
+                data: {
+                    session: 'foobar'
+                }
+            });
+            // But an unsuccessful network retrieval.
+            request_stub.withArgs({
+                method: 'GET',
+                url: '1/nwk/networks',
+                headers: {
+                    Authorization: 'Session foobar'
+                }
+            }).returns(new Promise((resolve, reject) => reject({
+                response: {
+                    status: 400
+                }
+            })));
+            assert.rejects(client.get('1/nwk/networks'));
+            assert(post_stub.notCalled);
+        })
         it('Properly propagates sign-in errors', async (done) => {
             let server = axios.create({
                 baseURL: 'https://eu2.loriot.io/'

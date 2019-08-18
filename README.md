@@ -69,6 +69,7 @@ A simple example of how to do this is as follows:
 
     import SDK from 'loriot-sdk';
     let client = SDK({
+        server: 'eu2',
         credentials: {
             username: 'foo@bar.com',
             password: 'foobar'

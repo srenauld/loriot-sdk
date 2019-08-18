@@ -1,0 +1,76 @@
+{
+  "name": "loriot-sdk",
+  "version": "1.0.0",
+  "description": "A prototype Loriot SDK to facilitate development and integration",
+  "main": "index.js",
+  "author": "Seb Renauld <seb.renauld@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@hapi/joi": "^15.1.0",
+    "axios": "^0.19.0",
+    "eventemitter3": "^4.0.0",
+    "immutable": "^4.0.0-rc.12",
+    "immutablediff": "^0.4.4",
+    "joi": "^14.3.1",
+    "ws": "^7.1.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.5.0",
+    "@babel/plugin-transform-object-super": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/runtime": "^7.5.5",
+    "cross-env": "^5.2.0",
+    "jest": "^24.8.0",
+    "sinon": "^7.4.1",
+    "winston": "^3.2.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "verbose": true,
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js,vue}",
+      "!**/node_modules/**"
+    ],
+    "coverageReporters": [
+      "html",
+      "text-summary"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "vue"
+    ],
+    "coverageDirectory": "cov",
+    "transformIgnorePatterns": [
+      "/node_modules/(?!@babel/runtime-corejs2).+\\.js$"
+    ],
+    "transform": {
+      ".*\\.(js)$": "babel-jest"
+    }
+  },
+  "nyc": {
+    "reporter": [
+      "html",
+      "text",
+      "lcov"
+    ],
+    "check-coverage": true,
+    "include": [
+      "src/**/*.(js|vue)"
+    ],
+    "exclude": [
+      "src/index.js",
+      "src/example.js"
+    ],
+    "extension": [
+      "js",
+      "vue"
+    ],
+    "instrument": false,
+    "sourceMap": false
+  }
+}

@@ -26,7 +26,7 @@ export default (schema, methods, settings = {}) => {
 
         async update() {
             let diff = this._diff();
-            if (Object.keys(diff).length < 0) return;
+            if (Object.keys(diff).length <= 0) return;
             return await this._client.update(primaryKeyFn(this), diff);
         }
 

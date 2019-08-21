@@ -9,7 +9,7 @@ export default class WebSocket {
         this.emitter = new EE3();
         this.callbacks = [];
     }
-
+    
     start() {
         if (!this.socket) this.socket = new InnerWS(`wss://${this.settings.server}.loriot.io/app?id=${this.settings.applicationId}&token=${this.settings.token}`);
         this.socket.on('message', (message) => {

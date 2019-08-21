@@ -13,7 +13,16 @@ export default class Data {
     }
 
     parse(event) {
-        event && event.cmd && this.events[event.cmd] && this.events[event.cmd].filter(([eui, cb]) => event.EUI === eui).forEach(([eui, cb]) => cb(event));
+        event && event.cmd && this.events[event.cmd] && this.events[event.cmd].filter(([eui, cb]) => event.EUI === eui || eui === false).forEach(([eui, cb]) => cb(event));
+    }
+
+    all(cb) {
+        this.events.rx.push([false, cb]);
+        return this;
+    }
+    
+    gateway(eui, cb) {
+        this.events.gw.push([eui, cb]);
     }
 
     device(eui, cb) {

@@ -1,0 +1,5 @@
+.coveralls.yml
+.travis.yml
+yarn.lock
+cov/**/*
+node_modules

@@ -36,7 +36,10 @@ describe('Data', () => {
         assert.equal(require('ws').mock.calls[0][0], "wss://eu2.loriot.io/app?id=foo&token=bar");
 
         let spy = sinon.spy();
+        let gwSpy = sinon.spy();
+        data.gateway('test', gwSpy);
         data.device('foobar', spy);
+        data.all(spy);
 
         mockedWS.emit('message', JSON.stringify({
             cmd: 'gw',
@@ -48,7 +51,14 @@ describe('Data', () => {
             data: '01'
         }));
 
-        assert(spy.calledOnceWith({
+        assert(gwSpy.calledOnceWith(
+            {
+                cmd: 'gw',
+                EUI: 'test'
+            }
+        ));
+        assert(spy.calledTwice);
+        assert(spy.calledWith({
             cmd: 'rx',
             EUI: 'foobar',
             data: '01'

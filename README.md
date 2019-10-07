@@ -1,5 +1,7 @@
-The NodeJS LORIOT SDK
-------------
+
+# The NodeJS LORIOT SDK
+
+[![LORIOT logo](https://docs.loriot.io/download/attachments/1245208/Loriot%20logo%20end_new.png?version=1&modificationDate=1566484185656&api=v2 | width=400)
 
 [![Build Status](https://travis-ci.org/srenauld/loriot-sdk.svg?branch=master)](https://travis-ci.org/srenauld/loriot-sdk) [![Coverage Status](https://coveralls.io/repos/github/srenauld/loriot-sdk/badge.svg?branch=master)](https://coveralls.io/github/srenauld/loriot-sdk?branch=master) 
 
@@ -11,7 +13,7 @@ reduce  development time by providing an abstraction layer of the raw APIs.
 This encompasses both the management APIs used to add resources (gateways or 
 sensors), and the realtime data socket.
 
-# Features / Roadmap
+## Features / Roadmap
 
 The library currently supports the following use cases:
 
@@ -46,7 +48,7 @@ Additional use cases are welcome, as are pull requests. In particular,
 the statistics and events for devices and gateways are of particular 
 interest. Due to lack of data, however, they were left for later.
 
-# Initialization
+## Initialization
 
 To be able to interact with LORIOT, two possible sets of credentials can 
 be provided:
@@ -57,7 +59,7 @@ that allows access to this). Enables: `Networks`, `Applications`.
 - An `applicationId` and `token`. This allows access to the websocket 
 events for the application provided. Enables: `Data`.
 
-**Accessing applications and provisioning devices**
+### Accessing applications and provisioning devices
 
 Suppose that you are providing a service to a number of third-parties and 
 need to provision and decomission devices. A typical use-case would be 
@@ -86,7 +88,7 @@ A simple example of how to do this is as follows:
     console.log(newDevice.appskey);
     console.log(newDevice.appKey);
 
-**Accessing realtime updates from devices**
+### Accessing realtime updates from devices
 
 Being able to receive messages from either gateways (status updates) or sensors 
 (messages) is also straightforward, as is being able to enqueue messages for 
@@ -109,7 +111,7 @@ Websocket reconnection is handled internally; do not forget to call
 `close()`. A limit of one connection attempt per second is also built in,
 and the library will actively throw an `Error` should this situation occur.
 
-# Limitations
+## Limitations
 
 Currently, even though every component and dependency is designed to 
 also work in most browsers, due to the lack of CORS headers on the 

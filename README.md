@@ -1,19 +1,19 @@
-The (unofficial) LORIOT SDK
-------------
+
+# The NodeJS LORIOT SDK
+
+![](https://docs.loriot.io/download/attachments/1245208/Loriot%20logo%20end_new.png)
 
 [![Build Status](https://travis-ci.org/srenauld/loriot-sdk.svg?branch=master)](https://travis-ci.org/srenauld/loriot-sdk) [![Coverage Status](https://coveralls.io/repos/github/srenauld/loriot-sdk/badge.svg?branch=master)](https://coveralls.io/github/srenauld/loriot-sdk?branch=master) 
 
-LORIOT provides a great service as a LoRa back-office. However, 
-outside of the well-documented websocket transport to communicate 
-with your LoRa devices, everything had to be done manually. Network 
-and application set-up, device provisioning, all that was undocumented.
+This library provides a convenient wrapper around most of the 
+APIs exposed by the LORIOT back-office, both on the free usage tier and 
+professional versions. It aims to ease the pain commonly encountered and to 
+reduce  development time by providing an abstraction layer of the raw APIs.
 
-I needed to do something about this for a project, as setting up a 
-large amount of LoRa devices would be too time-consuming. It is 
-entirely unofficial for now, but allows programmatic access to all 
-the parts of the API that you can find in the dashboard.
+This encompasses both the management APIs used to add resources (gateways or 
+sensors), and the realtime data socket.
 
-# Features / Roadmap
+## Features / Roadmap
 
 The library currently supports the following use cases:
 
@@ -48,7 +48,7 @@ Additional use cases are welcome, as are pull requests. In particular,
 the statistics and events for devices and gateways are of particular 
 interest. Due to lack of data, however, they were left for later.
 
-# Initialization
+## Initialization
 
 To be able to interact with LORIOT, two possible sets of credentials can 
 be provided:
@@ -56,10 +56,10 @@ be provided:
 - Your account `username` and `password`. This will enable all the 
 management API (as there is currently no other authorization mechanism 
 that allows access to this). Enables: `Networks`, `Applications`.
-- An `applicationID` and `token`. This allows access to the websocket 
+- An `applicationId` and `token`. This allows access to the websocket 
 events for the application provided. Enables: `Data`.
 
-**Accessing applications and provisioning devices**
+### Accessing applications and provisioning devices
 
 Suppose that you are providing a service to a number of third-parties and 
 need to provision and decomission devices. A typical use-case would be 
@@ -88,7 +88,30 @@ A simple example of how to do this is as follows:
     console.log(newDevice.appskey);
     console.log(newDevice.appKey);
 
-# Limitations
+### Accessing realtime updates from devices
+
+Being able to receive messages from either gateways (status updates) or sensors 
+(messages) is also straightforward, as is being able to enqueue messages for 
+delivery. The following snippet highlights both of those:
+
+    import SDK from 'loriot-sdk';
+    let client = SDK({
+        server: 'eu2',
+        applicationId: 'foo',
+        token: 'bar'
+    });
+
+    client.Data.device('FOOBAR', async (message) => {
+        console.log("Received message for device EUI FOOBAR");
+        // We're going to send a confirmed message
+        await client.Data.send("FOOBAR", "01", true);
+    })
+
+Websocket reconnection is handled internally; do not forget to call 
+`close()`. A limit of one connection attempt per second is also built in,
+and the library will actively throw an `Error` should this situation occur.
+
+## Limitations
 
 Currently, even though every component and dependency is designed to 
 also work in most browsers, due to the lack of CORS headers on the 

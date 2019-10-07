@@ -12,8 +12,17 @@ export default class Data {
         this.socket.on('gw', (data) => this.parse(data));
     }
 
-    parse(event) {
-        event && event.cmd && this.events[event.cmd] && this.events[event.cmd].filter(([eui, cb]) => event.EUI === eui || eui === false).forEach(([eui, cb]) => cb(event));
+    close() {
+        return this.socket && this.socket.stop();
+    }
+    async parse(event) {
+        return event && event.cmd && this.events[event.cmd] && await Promise.all(
+            this.events[event.cmd]
+                .filter(([eui, cb]) => {
+                    return event.EUI === eui || eui === false;
+                })
+                .map( async ([eui, cb]) => await cb(event))
+            );
     }
 
     all(cb) {

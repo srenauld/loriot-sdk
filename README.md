@@ -1,7 +1,7 @@
 
 # The NodeJS LORIOT SDK
 
-![LORIOT logo](https://docs.loriot.io/download/attachments/1245208/Loriot%20logo%20end_new.png?version=1&modificationDate=1566484185656&api=v2 | width=400)
+![](https://docs.loriot.io/download/attachments/1245208/Loriot%20logo%20end_new.png)
 
 [![Build Status](https://travis-ci.org/srenauld/loriot-sdk.svg?branch=master)](https://travis-ci.org/srenauld/loriot-sdk) [![Coverage Status](https://coveralls.io/repos/github/srenauld/loriot-sdk/badge.svg?branch=master)](https://coveralls.io/github/srenauld/loriot-sdk?branch=master) 
 

@@ -1,5 +1,5 @@
-import Joi from '@hapi/joi';
-import dataObj from './dataObject';
+import * as Joi from '@hapi/joi';
+import dataObj from './dataObject.js';
 import locationFormat from './formats/location.js';
 
 const schema = Joi.object().keys({

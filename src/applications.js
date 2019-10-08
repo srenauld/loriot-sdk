@@ -1,5 +1,6 @@
-import dataObj from './dataObject';
-import Joi from '@hapi/joi';
+
+import * as Joi from '@hapi/joi';
+import dataObj from './dataObject.js';
 import { Devices } from './devices.js';
 
 const schema = Joi.object().keys({

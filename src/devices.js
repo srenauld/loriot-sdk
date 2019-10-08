@@ -1,6 +1,6 @@
 
-import dataObj from './dataObject';
-import Joi from '@hapi/joi';
+import dataObj from './dataObject.js';
+import * as Joi from '@hapi/joi';
 
 const schema = Joi.object().keys({
     _id: Joi.string().regex(/^[0-9A-F]{16}$/),

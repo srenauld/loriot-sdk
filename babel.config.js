@@ -1,8 +1,21 @@
 module.exports = {
     "presets": [
-        "@babel/preset-env"
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "node": "6.10"
+                },
+                modules: false
+            }
+        ]
+      ],
+      "plugins": [
+        "@babel/plugin-transform-object-super"
     ],
-    "plugins": ["@babel/plugin-transform-runtime", "@babel/plugin-transform-object-super", "@babel/plugin-transform-modules-commonjs"],
+    "ignore": [
+        "node_modules/**/*"
+    ],
     "env": {
         "test": {
             "plugins": ["@babel/plugin-transform-object-super", "@babel/plugin-transform-modules-commonjs"],

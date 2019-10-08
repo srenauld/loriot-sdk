@@ -1,5 +1,7 @@
 .coveralls.yml
 .travis.yml
+.gitignore
 yarn.lock
 cov/**/*
+rollup.config.js
 node_modules

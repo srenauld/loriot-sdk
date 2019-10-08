@@ -1,6 +1,6 @@
 import { Gateway, Gateways } from './gateways.js';
-import dataObj from './dataObject';
-import Joi from '@hapi/joi';
+import dataObj from './dataObject.js';
+import * as Joi from '@hapi/joi';
 import { join } from 'path';
 import locationFormat from './formats/location.js';
 

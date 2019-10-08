@@ -1,5 +1,3 @@
-import Socket from './websocket.js';
-
 export default class Session {
 
     constructor(client, settings) {

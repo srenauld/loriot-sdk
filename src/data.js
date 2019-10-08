@@ -1,4 +1,4 @@
-import WSH from './transports/websocket';
+import WSH from './transports/websocket.js';
 
 export default class Data {
 

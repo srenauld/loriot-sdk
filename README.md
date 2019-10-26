@@ -97,15 +97,27 @@ delivery. The following snippet highlights both of those:
     import SDK from 'loriot-sdk';
     let client = SDK({
         server: 'eu2',
-        applicationId: 'foo',
-        token: 'bar'
+        token: {
+            applicationId: 'foo',
+            id: 'bar'
+        }
     });
 
-    client.Data.device('FOOBAR', async (message) => {
+    let data = await client.Data;
+    data.device('FOOBAR', async (message) => {
         console.log("Received message for device EUI FOOBAR");
         // We're going to send a confirmed message
         await client.Data.send("FOOBAR", "01", true);
-    })
+    });
+    // You can also listen for events related to a sensor as picked up by
+    // a gateway:
+    data.gateway('FOOBAR', async (message) => {
+        console.log('Received gateway message for device EUI FOOBAR');
+    });
+    // Or for all gateways
+    data.all_events(async (message) => {
+        console.log('Received gateway event')
+    });
 
 Websocket reconnection is handled internally; do not forget to call 
 `close()`. A limit of one connection attempt per second is also built in,

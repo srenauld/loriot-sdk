@@ -40,13 +40,19 @@ describe('Data', () => {
 
         let spy = sinon.spy();
         let gwSpy = sinon.spy();
+        let allSpy = sinon.spy();
         data.gateway('test', gwSpy);
         data.device('foobar', spy);
+        data.all_events(allSpy);
         data.all(spy);
 
         mockedWS.emit('message', JSON.stringify({
             cmd: 'gw',
             EUI: 'test'
+        }));
+        mockedWS.emit('message', JSON.stringify({
+            cmd: 'gw',
+            EUI: 'baz'
         }));
 
         mockedWS.emit('message', JSON.stringify({
@@ -61,6 +67,7 @@ describe('Data', () => {
                 EUI: 'test'
             }
         ));
+        assert(allSpy.calledTwice);
         assert(spy.calledTwice);
         assert(spy.calledWith({
             cmd: 'rx',

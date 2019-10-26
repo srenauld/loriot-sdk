@@ -33,6 +33,9 @@ export default class Data {
     gateway(eui, cb) {
         this.events.gw.push([eui, cb]);
     }
+    all_events(cb) {
+        this.events.gw.push([false, cb]);
+    }
 
     device(eui, cb) {
         this.events.rx.push([eui, cb]);

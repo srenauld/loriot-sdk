@@ -1,6 +1,6 @@
 {
   "name": "loriot-sdk",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A prototype Loriot SDK to facilitate development and integration",
   "main": "index.js",
   "author": "Seb Renauld <seb.renauld@gmail.com>",

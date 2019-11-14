@@ -34,12 +34,13 @@ const Loriot = function(settings) {
         settings.server = parsed.server;
         return Loriot(settings);
     }
+    if (settings.server.indexOf(".") < 0) settings.server = settings.server + ".loriot.io";
     assert(settings.server, "A server must be provided (eu1, eu2...)");
     if (settings.credentials) {
         assert(settings.credentials.username, "When supplying credentials, a username must be provided");
         assert(settings.credentials.password, "When supplying credentials, a password must be provided");
         let client = Axios.create({
-            baseURL: `https://${settings.server}.loriot.io`
+            baseURL: `https://${settings.server}`
         });
         let session = new Session(client, settings.credentials);
         let output = {

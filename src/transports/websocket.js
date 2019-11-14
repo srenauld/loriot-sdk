@@ -16,13 +16,14 @@ export default class WebSocket {
         this.stopped = true;
         this.socket = null;
     }
+
     start() {
         if (this.stopped) return this;
         if (this.socket) return this;
         let currentTime = new Date().getTime();
         if (this.startedAt && (currentTime - this.startedAt) < 1000) throw Error("Websocket attempted to reconnect twice in < 1s. This is not normal, and may indicates network issues or incorrect credentials.");
         this.startedAt = currentTime;
-        this.socket = new InnerWS(`wss://${this.settings.server}.loriot.io/app?id=${this.settings.applicationId}&token=${this.settings.token}`);
+        this.socket = new InnerWS(`wss://${this.settings.server}/app?id=${this.settings.applicationId}&token=${this.settings.token}`);
         this.socket.on('message', (message) => {
             let msg = JSON.parse(message);
             if (msg && msg.cmd) {

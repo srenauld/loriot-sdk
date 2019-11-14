@@ -1,5 +1,31 @@
 let SDK = require('../src/index.js');
 import assert from 'assert';
+
+
+jest.mock('ws', () => {
+    return jest.fn().mockImplementation( function() {
+        let callbacks = {
+            "message": [],
+            "open": [],
+            "close": []
+        };
+
+        this.emit = jest.fn(function(event, data) {
+            for (let o of callbacks[event]) {
+                o(data)
+            }
+        });
+        this.on = jest.fn(function(event, cb) {
+                callbacks[event].push(cb);
+                return true;
+        });
+        this.send = jest.fn(function(data) {
+            return true;
+        });
+    });
+});
+
+
 describe('Loriot SDK initialization', () => {
     it('should allow the user to supply a token', () => {
         const token = "vgEA4gAAAA1ldTIubG9yaW90LmlvOZB3czWamEix9KJbRLCXpw==";

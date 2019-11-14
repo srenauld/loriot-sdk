@@ -30,7 +30,7 @@ jest.mock('ws', () => {
 describe('Data', () => {
     it('Properly initializes retrieves and sends data', async () => {
         let data = await Data.fromCredentials({
-            server: 'eu2',
+            server: 'eu2.loriot.io',
             applicationId: 'foo',
             token: 'bar'
         });
@@ -90,7 +90,7 @@ describe('Data', () => {
     });
     it('Properly resumes connection on data closure', async () => {
         let data = await Data.fromCredentials({
-            server: 'eu2',
+            server: 'eu2.loriot.io',
             applicationId: 'foo',
             token: 'bar'
         });

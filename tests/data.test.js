@@ -24,6 +24,9 @@ jest.mock('ws', () => {
         this.send = jest.fn(function(data) {
             return true;
         });
+        this.close = jest.fn(function(cb) {
+            cb && cb()
+        });
     });
 });
 
@@ -86,7 +89,7 @@ describe('Data', () => {
             data: '01',
             port: 1
         });
-        data.close();
+        await data.close();
     });
     it('Properly resumes connection on data closure', async () => {
         let data = await Data.fromCredentials({

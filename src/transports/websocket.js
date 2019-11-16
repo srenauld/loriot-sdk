@@ -12,9 +12,15 @@ export default class WebSocket {
         this.callbacks = [];
     }
     
-    stop() {
-        this.stopped = true;
-        this.socket = null;
+    async stop() {
+        return new Promise((resolve, reject) => {
+            this.stopped = true;
+            if (!this.socket) return resolve(true);
+            this.socket.close( () => {
+                this.socket = null;
+                return resolve(true);
+            });
+        });
     }
 
     start() {

@@ -5,7 +5,7 @@ import WSBroadcaster from './transports/websocket.js';
 import Data from './data.js';
 import Axios from "axios";
 import assert from 'assert';
-import base64 from 'binary-base64';
+const base64 = require('binary-base64');
 
 function toHexString(byteArray) {
     return Array.from(byteArray, function(byte) {
@@ -75,7 +75,7 @@ const Loriot = function(settings) {
     return returned;
 
 }
-Loriot.prototype = {};
+//Loriot.prototype = {};
 
 Loriot.parseToken = function(token) {
     let parsed = base64.decode(token.replace("-", "+").replace("_", "/"));

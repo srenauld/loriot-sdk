@@ -2,8 +2,32 @@ import Session from '../src/transports/session.js';
 import axios from 'axios';
 import sinon from 'sinon';
 import assert from 'assert';
-
+process.on('unhandledRejection', (reason, p) => {
+    console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+    // application specific logging, throwing an error, or other logic here
+  });
 describe('Session manager', () => {
+    describe('Bearer token', () => {
+        it('Accepts a bearer token', async () => {
+            let server = axios.create({
+                baseURL: 'https://eu2.loriot.io/'
+            });
+            let post_stub = sinon.stub(server, 'request')
+            post_stub.returns({
+                data: 'foo'
+            });
+            
+            let client = new Session(server, "foobar");
+            let result = await client.get('1/nwk/user');
+            assert(post_stub.calledOnceWith({
+                url: '1/nwk/user',
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer foobar'
+                }
+            }));
+        })
+    })
     describe('Login', () => {
         it('Notices that it is not signed in and logs you in', async () => {
             let server = axios.create({
@@ -41,7 +65,12 @@ describe('Session manager', () => {
                 pwd: 'bar'
             }).returns({});
 
-            assert.rejects(client.signIn());
+            try {
+                await client.signIn();
+                assert(false);
+            } catch (e) {
+                assert(true);
+            };
         });
         it('Attempts to sign in again after a failure', async () => {
             let server = axios.create({
@@ -74,9 +103,12 @@ describe('Session manager', () => {
                     status: 403
                 }
             })));
-            assert.rejects(client.get('1/nwk/networks'));
-            assert(post_stub.calledOnce);
-
+            try {
+                await client.get('1/nwk/networks');
+                assert(false);
+            } catch (e) {
+                assert(post_stub.calledTwice);
+            }
         });
         it('Immediately fails on true failure', async () => {
             let server = axios.create({
@@ -105,13 +137,17 @@ describe('Session manager', () => {
                 headers: {
                     Authorization: 'Session foobar'
                 }
-            }).returns(new Promise((resolve, reject) => reject({
+            }).rejects({
                 response: {
                     status: 400
                 }
-            })));
-            assert.rejects(client.get('1/nwk/networks'));
-            assert(post_stub.notCalled);
+            });
+            try {
+                await client.get('1/nwk/networks');
+                assert(false);
+            } catch (e) {
+                assert(post_stub.notCalled);
+            }
         })
         it('Properly propagates sign-in errors', async (done) => {
             let server = axios.create({
@@ -143,7 +179,10 @@ describe('Session manager', () => {
                 username: 'foo',
                 password: 'bar'
             });
-            client.token = 'foobar';
+            client.token = {
+                type: 'Session',
+                value: 'foobar'
+            };
             let result = await client.get('1/nwk/user');
             assert(post_stub.calledOnceWith({
                 url: '1/nwk/user',

@@ -16,7 +16,10 @@ describe('Devices', () => {
             username: 'foo',
             password: 'bar'
         });
-        client.token = 'foobar';
+        client.token = {
+            type: 'Session',
+            value: 'foobar'
+        }
     });
     it('Allows the modification of devices', async () => {
         let stub = sinon.stub(server, 'request');

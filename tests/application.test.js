@@ -15,7 +15,10 @@ describe('Applications', () => {
             username: 'foo',
             password: 'bar'
         });
-        client.token = 'foobar';
+        client.token = {
+            type: 'Session',
+            value: 'foobar'
+        };
     });
     describe('Creation', () => {
         

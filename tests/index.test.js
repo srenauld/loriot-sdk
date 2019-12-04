@@ -8,6 +8,29 @@ jest.mock('axios', () => {
         }
     };
 });
+jest.mock('ws', () => {
+    return jest.fn().mockImplementation( function() {
+        let callbacks = {
+            "message": [],
+            "open": [],
+            "close": []
+        };
+
+        this.emit = jest.fn(function(event, data) {
+            for (let o of callbacks[event]) {
+                o(data)
+            }
+        });
+        this.on = jest.fn(function(event, cb) {
+                callbacks[event].push(cb);
+                return true;
+        });
+        this.send = jest.fn(function(data) {
+            return true;
+        });
+    });
+});
+
 
 describe('# Loriot()', () => {
     it('Properly parses tokens', () => {

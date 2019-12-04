@@ -2,7 +2,14 @@ export default class Session {
 
     constructor(client, settings) {
         this.client = client;
-        this.token = null;
+        if (typeof settings === "string") {
+            this.token = {
+                type: "Bearer",
+                value: settings
+            };
+        } else {
+            this.token = null;
+        }
         this.settings = settings;
     }
 
@@ -21,7 +28,10 @@ export default class Session {
             }
         );
         if (signInRequest && signInRequest.data && signInRequest.data.session) {
-            this.token = signInRequest.data.session;
+            this.token = {
+                type: "Session",
+                value: signInRequest.data.session
+            };
             return true;
         }
         throw new Error("Could not log in to the Loriot back-office");
@@ -43,7 +53,7 @@ export default class Session {
                 method: 'GET',
                 url: url,
                 headers: {
-                    Authorization: 'Session ' + this.token,
+                    Authorization: this.token.type + " " + this.token.value
                 }
             };
             return await this.client.request(request);     
@@ -58,7 +68,7 @@ export default class Session {
                 url: url,
                 data: body,
                 headers: {
-                    Authorization: 'Session ' + this.token
+                    Authorization: this.token.type + " " + this.token.value
                 }
             };
             return await this.client.request(request);
@@ -71,7 +81,7 @@ export default class Session {
                 method: 'DELETE',
                 url: url,
                 headers: {
-                    Authorization: 'Session ' + this.token
+                    Authorization: this.token.type + " " + this.token.value
                 }
             };
             return await this.client.request(request);

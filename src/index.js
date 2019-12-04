@@ -41,16 +41,17 @@ const Loriot = function(settings) {
         return Loriot(settings);
     }
 
+    let client = Axios.create({
+        baseURL: `https://${settings.server}`
+    });
+
     if (settings.credentials) {
         assert(settings.credentials.username, "When supplying credentials, a username must be provided");
         assert(settings.credentials.password, "When supplying credentials, a password must be provided");
-        let client = Axios.create({
-            baseURL: `https://${settings.server}`
-        });
         let session = new Session(client, settings.credentials);
         let output = {
             Networks: new Networks(session),
-           Applications: new Applications(session)
+            Applications: new Applications(session)
         };
         returned = {
             ...returned,
@@ -60,12 +61,15 @@ const Loriot = function(settings) {
     if (settings.token) {
         assert(settings.token.id, "When supplying a token, the token must be provided under the id key");
         assert(settings.token.applicationId, "When supplying a token, an applicationId must be provided");
+        let session = new Session(client, settings.token.id);
         let output = {
             Data: Data.fromCredentials({
                 server: settings.server,
                 applicationId: settings.token.applicationId,
                 token: settings.token.id
-            })
+            }),
+            Applications: new Applications(session),
+            Networks: new Networks(session)
         };
         returned = {
             ...returned,
@@ -79,7 +83,6 @@ const Loriot = function(settings) {
 
 Loriot.parseToken = function(token) {
     let parsed = base64.decode(token.replace("-", "+").replace("_", "/"));
-    if (!parsed) throw Error("Token was not valid base64");
     if (parsed.length < 8) throw Error("Token was not long enough to be a valid LORIOT token");
     let appId = toHexString(parsed.slice(0, 4)).toUpperCase();
     let urlLength = uint32be(parsed.slice(4, 8));

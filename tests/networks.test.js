@@ -16,7 +16,10 @@ describe('Networks', () => {
             username: 'foo',
             password: 'bar'
         });
-        client.token = 'foobar';
+        client.token = {
+            type: 'Session',
+            value: 'foobar'
+        };
     });
     describe('Network retrieval', () => {
         it('Retrieves networks', async () => {

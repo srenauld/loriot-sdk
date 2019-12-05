@@ -18,7 +18,10 @@ describe('Gateways', () => {
             username: 'foo',
             password: 'bar'
         });
-        client.token = 'foobar';
+        client.token = {
+            type: 'Session',
+            value: 'foobar'
+        };
     });
     it('Properly lists gateways through a generator', async () => {
         let gws = new Gateways(client, 'A00000FD');

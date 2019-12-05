@@ -24,13 +24,16 @@ jest.mock('ws', () => {
         this.send = jest.fn(function(data) {
             return true;
         });
+        this.close = jest.fn(function(cb) {
+            cb && cb()
+        });
     });
 });
 
 describe('Data', () => {
     it('Properly initializes retrieves and sends data', async () => {
         let data = await Data.fromCredentials({
-            server: 'eu2',
+            server: 'eu2.loriot.io',
             applicationId: 'foo',
             token: 'bar'
         });
@@ -86,11 +89,11 @@ describe('Data', () => {
             data: '01',
             port: 1
         });
-        data.close();
+        await data.close();
     });
     it('Properly resumes connection on data closure', async () => {
         let data = await Data.fromCredentials({
-            server: 'eu2',
+            server: 'eu2.loriot.io',
             applicationId: 'foo',
             token: 'bar'
         });
